@@ -19,7 +19,7 @@ branches:
 env:
   global:
   - KITCHEN_YAML=.kitchen.yml
-#  - KITCHEN_LOCAL_YAML=.kitchen.dokken.yml
+  - KITCHEN_LOCAL_YAML=.kitchen.dokken.yml
   matrix:
   - INSTANCE=default-centos-7
   - INSTANCE=default-debian-8
