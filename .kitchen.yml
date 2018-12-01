@@ -1,0 +1,55 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+  # You may wish to disable always updating cookbooks in CI or other testing environments.
+  # For example:
+  #   always_update_cookbooks: <%= !ENV['CI'] %>
+  always_update_cookbooks: true
+
+verifier:
+  name: inspec
+
+platforms:
+#  - name: ubuntu-16.04
+  - name: centos-7
+
+suites:
+  - name: default
+    run_list:
+      - recipe[test::install_agent]
+    verifier:
+      inspec_tests:
+        - test/integration/default
+    attributes:
+      aws_cloudwatch:
+        config:
+          params:
+            shared_credential_profile: test_profile
+            shared_credential_file: /etc/test_credential_file
+            http_proxy: http://192.168.0.1
+            https_proxy: https://192.168.0.1
+            no_proxy: http://192.168.0.10
+  - name: prop
+    run_list:
+      - recipe[test::install_agent_with_prop]
+    verifier:
+      inspec_tests:
+        - test/integration/default
+    attributes:
+  - name: config
+    run_list:
+      - recipe[test::install_agent_with_config]
+    verifier:
+      inspec_tests:
+        - test/integration/default
+    attributes:
+  - name: unit-incorrect-gpg-fingerprint
+    run_list:
+    - recipe[test::unit_incorrect_gpg_fingerprint]
+    verifier:
+      inspec_tests:
+        - test/unit/default/incorrect_gpg_test.rb
+    attributes:
