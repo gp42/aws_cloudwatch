@@ -10,4 +10,5 @@ node.default['aws_cloudwatch']['gpg']['fingerprint'] = "AAAAAAAAAAAAAAAAAAAAAAAA
 aws_cloudwatch_agent 'default' do
   action          [:install, :configure]
   ignore_failure  true
+  json_config     'amazon-cloudwatch-agent.json.erb'
 end

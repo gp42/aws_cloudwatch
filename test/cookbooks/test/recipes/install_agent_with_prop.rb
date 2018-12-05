@@ -11,4 +11,5 @@ aws_cloudwatch_agent 'default' do
                   :http_proxy => 'http://192.168.0.1',
                   :https_proxy => 'https://192.168.0.1',
                   :no_proxy => 'http://192.168.0.10'
+  json_config     'amazon-cloudwatch-agent.json.erb'
 end
