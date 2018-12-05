@@ -17,3 +17,7 @@ describe file(File::join("#{config_path}", 'common-config.toml')) do
   its('content') { should match %r{.*shared_credential_profile = "test_profile".*} }
   its('content') { should match %r{.*shared_credential_file= "/etc/test_credential_file".*} }
 end
+
+describe file(File::join("#{config_path}", 'amazon-cloudwatch-agent.json')) do
+  it { should exist }
+end

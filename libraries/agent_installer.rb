@@ -6,6 +6,7 @@ module AWSCloudwatch
     resource_name :aws_cloudwatch_agent
 
     property :config, String
+    property :json_config, String
     property :config_params, Hash, default: {'param' => 'value'}
 
     default_action :install
@@ -47,33 +48,34 @@ module AWSCloudwatch
       end
 
       # Install
-      case node[:platform]
-        when 'redhat', 'centos'
-          yum_package 'amazon-cloudwatch-agent' do
-            action  :install
-            source  package_files['package']
-          end
-        when 'ubuntu', 'debian'
-          dpkg_package 'amazon-cloudwatch-agent' do
-            action  :install
-            source  package_files['package']
-          end
+      Chef::Log.warn("Installing amazon-cloudwatch-agent package on platform: #{node[:platform]}...")
+      package 'amazon-cloudwatch-agent' do
+        action  :install
+        source  package_files['package']
       end
+      # case node[:platform]
+      #   when 'redhat', 'centos'
+      #     yum_package 'amazon-cloudwatch-agent' do
+      #       action  :install
+      #       source  package_files['package']
+      #     end
+      #   when 'ubuntu', 'debian'
+      #     dpkg_package 'amazon-cloudwatch-agent' do
+      #       action  :install
+      #       source  package_files['package']
+      #     end
+      # end
     end
 
     action :configure do
       config = new_resource.config
       config_params = new_resource.config_params || {}
 
-      node[:platform] == 'windows' ? \
-        config_path = node['aws_cloudwatch']['config']['path']['windows'] : \
-        config_path = node['aws_cloudwatch']['config']['path']['linux']
-
       config ? \
         config_source = config : \
         config_source = node['aws_cloudwatch']['config']['source']
 
-      template ::File::join("#{config_path}", node['aws_cloudwatch']['config']['file_name']) do
+      template ::File::join(config_path, node['aws_cloudwatch']['config']['file_name']) do
         action    :create
         source    config_source
 
@@ -99,12 +101,76 @@ module AWSCloudwatch
           )
         end
       end
+
+      if new_resource.json_config
+        template ::File::join(config_path, node['aws_cloudwatch']['config']['json_file_name']) do
+          action    :create
+          source    new_resource.json_config
+        end
+      end
+    end
+
+    action :start do
+      script 'amazon-cloudwatch-agent-ctl_start' do
+        action :run
+        case node[:platform]
+          when 'windows'
+            interpreter "powershell"
+            # TODO: Powershell draft
+            code <<-EOH
+              ./amazon-cloudwatch-agent-ctl.ps1 -a start -m auto
+            EOH
+          else
+            interpreter "bash"
+            code <<-EOH
+              sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start -m auto
+              res="$(sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a status)"
+              echo "$res" | grep '"status": "running"'
+              exit $?
+            EOH
+        end
+      end
+    end
+
+    action :stop do
+      script 'amazon-cloudwatch-agent-ctl_stop' do
+        action :run
+        case node[:platform]
+          when 'windows'
+              interpreter "powershell"
+            # TODO: Powershell draft
+            code <<-EOH
+              ./amazon-cloudwatch-agent-ctl.ps1 -a stop -m auto
+            EOH
+          else
+            interpreter "bash"
+            code <<-EOH
+              sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a stop -m auto
+              res="$(sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a status)"
+              echo "$res" | grep '"status": "stopped"'
+              exit $?
+            EOH
+        end
+      end
+    end
+
+    action :restart do
+      action_stop
+      action_start
     end
 
     action :delete do
-      file '/tmp/agent' do
-        action :delete
-        content "yes"
+      case node[:platform]
+        when 'redhat', 'centos'
+          yum_package 'amazon-cloudwatch-agent' do
+            action  :remove
+            source  package_files['package']
+          end
+        when 'ubuntu', 'debian'
+          dpkg_package 'amazon-cloudwatch-agent' do
+            action  :remove
+            source  package_files['package']
+          end
       end
     end
   end

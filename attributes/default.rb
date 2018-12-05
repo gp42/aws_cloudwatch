@@ -42,7 +42,8 @@ default['aws_cloudwatch']['config']['path'] = {
   "windows": "C:\ProgramData\Amazon\AmazonCloudWatchAgent"
 }
 default['aws_cloudwatch']['config']['file_name'] = 'common-config.toml'
-default['aws_cloudwatch']['config']['params']['shared_credential_profile'] = {
+default['aws_cloudwatch']['config']['json_file_name'] = 'amazon-cloudwatch-agent.json'
+default['aws_cloudwatch']['config']['params'] = {
   :shared_credential_profile => nil,
   :shared_credential_file => nil,
   :http_proxy => nil,

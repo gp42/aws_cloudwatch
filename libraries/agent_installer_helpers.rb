@@ -7,7 +7,12 @@ module AWSCloudwatch
          ::File.basename(u.path)
     end
 
-    # TODO: verify_installer needs a unit-test
+    def config_path
+      node[:platform] == 'windows' ? \
+        node['aws_cloudwatch']['config']['path']['windows'] : \
+        node['aws_cloudwatch']['config']['path']['linux']
+    end
+
     def verify_installer(args)
       sig = args['sig']
       package = args['package']

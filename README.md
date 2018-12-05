@@ -1,15 +1,14 @@
 # AWS Cloudwatch Cookbook
+[![Build Status](https://travis-ci.org/gp42/aws_cloudwatch.svg?branch=master)](https://travis-ci.org/gp42/aws_cloudwatch) [![Cookbook Version](https://img.shields.io/cookbook/v/mysql.svg)](https://supermarket.chef.io/cookbooks/aws_cloudwatch)
 
 This cookbook is created to install and configure AWS Cloudwatch agent.
-
-## Scope
-
-## Requirements
 
 ## Platform Support
 
 * Ubuntu 14.04, 16.04, 18.04
-* Centos 7
+* Centos 6, 7
+* Fedora (latest)
+* Amazon Linux
 
 ## Cookbook Dependencies
 
@@ -23,9 +22,19 @@ depends 'aws_cloudwatch', '~> 0.1.0'
 Then in a recipe:
 ```
 aws_cloudwatch_agent 'default' do
-  action :install
+  action      [:install, :configure, :restart]
+  json_config 'amazon-cloudwatch-agent.json.erb'
 end
 ```
+
+*json_config*
+
+Amazon CloudWatch Agent configuration file which defines which metrics/logs are collected.
+Place the `amazon-cloudwatch-agent.json.erb` file to `templates` directory. This is an agent configuration for metrics and logs collection.
+See AWS documentation for more information: [Manually Create or Edit the CloudWatch Agent Configuration File](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-Configuration-File-Details.html#CloudWatch-Agent-Configuration-File-Complete-Example)
+
+
+*config*
 
 The configuration file is at /opt/aws/amazon-cloudwatch-agent/etc.
 See [AWS Documentation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-on-first-instance.html#CloudWatch-Agent-profile-instance-first) for more info.
@@ -84,11 +93,22 @@ end
 ### aws_cloudwatch_agent
 The `aws_cloudwatch_agent` resource installs AWS Cloudwatch Agent.
 
+#### Parameters
+
+* `action` - Possible actions with the agent: `:install`, `:configure`, `:delete`, `:start`, `:stop`, `:restart`
+* `config` - A template name for a custom `test-config.toml` file
+* `config_params` - A hash with `test-config.toml` parameters
+* `json_config` - A template name for an `amazon-cloudwatch-agent.json` file
+
 #### Example
 ```
 aws_cloudwatch_agent 'default' do
-  action            :install
-  config_params     shared_credential_profile =>
-
+  action          [:install, :configure, :restart]
+  json_config     'amazon-cloudwatch-agent.json.erb'
+  config_params   :shared_credential_profile => 'test_profile',
+                  :shared_credential_file => '/etc/test_credential_file',
+                  :http_proxy => 'http://192.168.0.1',
+                  :https_proxy => 'https://192.168.0.1',
+                  :no_proxy => 'http://192.168.0.10'
 end
 ```
