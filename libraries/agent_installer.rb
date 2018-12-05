@@ -160,12 +160,10 @@ module AWSCloudwatch
         when 'ubuntu', 'debian'
           dpkg_package 'amazon-cloudwatch-agent' do
             action  :remove
-            source  package_files['package']
           end
         else
           package 'amazon-cloudwatch-agent' do
             action  :remove
-            source  package_files['package']
           end
       end
     end

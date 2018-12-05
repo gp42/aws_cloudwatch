@@ -1,7 +1,7 @@
 # AWS Cloudwatch Cookbook
 [![Build Status](https://travis-ci.org/gp42/aws_cloudwatch.svg?branch=master)](https://travis-ci.org/gp42/aws_cloudwatch) [![Cookbook Version](https://img.shields.io/cookbook/v/mysql.svg)](https://supermarket.chef.io/cookbooks/aws_cloudwatch)
 
-This cookbook is created to install and configure AWS Cloudwatch agent.
+This cookbook installs and configures [AWS CloudWatch Agent](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html).
 
 ## Platform Support
 
