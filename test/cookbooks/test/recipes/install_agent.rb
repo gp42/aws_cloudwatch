@@ -5,6 +5,6 @@
 # Copyright:: 2018, The Authors, All Rights Reserved.
 
 aws_cloudwatch_agent 'default' do
-  action      [:install, :configure, :restart]
+  action      [:install, :configure]
   json_config 'amazon-cloudwatch-agent.json.erb'
 end
