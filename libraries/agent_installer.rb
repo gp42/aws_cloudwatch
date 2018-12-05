@@ -49,22 +49,18 @@ module AWSCloudwatch
 
       # Install
       Chef::Log.warn("Installing amazon-cloudwatch-agent package on platform: #{node[:platform]}...")
-      package 'amazon-cloudwatch-agent' do
-        action  :install
-        source  package_files['package']
+      case node[:platform]
+        when 'ubuntu', 'debian'
+          dpkg_package 'amazon-cloudwatch-agent' do
+            action  :install
+            source  package_files['package']
+          end
+        else
+          package 'amazon-cloudwatch-agent' do
+            action  :install
+            source  package_files['package']
+          end
       end
-      # case node[:platform]
-      #   when 'redhat', 'centos'
-      #     yum_package 'amazon-cloudwatch-agent' do
-      #       action  :install
-      #       source  package_files['package']
-      #     end
-      #   when 'ubuntu', 'debian'
-      #     dpkg_package 'amazon-cloudwatch-agent' do
-      #       action  :install
-      #       source  package_files['package']
-      #     end
-      # end
     end
 
     action :configure do
@@ -161,13 +157,13 @@ module AWSCloudwatch
 
     action :delete do
       case node[:platform]
-        when 'redhat', 'centos'
-          yum_package 'amazon-cloudwatch-agent' do
+        when 'ubuntu', 'debian'
+          dpkg_package 'amazon-cloudwatch-agent' do
             action  :remove
             source  package_files['package']
           end
-        when 'ubuntu', 'debian'
-          dpkg_package 'amazon-cloudwatch-agent' do
+        else
+          package 'amazon-cloudwatch-agent' do
             action  :remove
             source  package_files['package']
           end
