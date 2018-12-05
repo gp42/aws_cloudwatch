@@ -155,7 +155,7 @@ module AWSCloudwatch
       action_start
     end
 
-    action :delete do
+    action :remove do
       case node[:platform]
         when 'ubuntu', 'debian'
           dpkg_package 'amazon-cloudwatch-agent' do

@@ -95,7 +95,7 @@ The `aws_cloudwatch_agent` resource installs AWS Cloudwatch Agent.
 
 #### Parameters
 
-* `action` - Possible actions with the agent: `:install`, `:configure`, `:delete`, `:start`, `:stop`, `:restart`
+* `action` - Possible actions with the agent: `:install`, `:configure`, `:remove`, `:start`, `:stop`, `:restart`
 * `config` - A template name for a custom `test-config.toml` file
 * `config_params` - A hash with `test-config.toml` parameters
 * `json_config` - A template name for an `amazon-cloudwatch-agent.json` file
