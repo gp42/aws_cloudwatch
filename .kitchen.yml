@@ -20,7 +20,7 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[test::install_agent]
+      - recipe[test::install_start_stop_agent]
     verifier:
       inspec_tests:
         - test/integration/default

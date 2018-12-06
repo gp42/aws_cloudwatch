@@ -1,6 +1,6 @@
 #
 # Cookbook:: test
-# Recipe:: install_agent
+# Recipe:: install_remove_agent
 #
 # Copyright:: 2018, The Authors, All Rights Reserved.
 
