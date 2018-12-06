@@ -5,7 +5,7 @@ This cookbook installs and configures [AWS CloudWatch Agent](https://docs.aws.am
 
 ## Platform Support
 
-* Ubuntu 14.04, 16.04, 18.04
+* Ubuntu 14.04, 16.04
 * Centos 6, 7
 * Fedora (latest)
 * Amazon Linux
