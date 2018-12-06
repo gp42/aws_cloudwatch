@@ -1,5 +1,5 @@
 # AWS Cloudwatch Cookbook
-[![Build Status](https://travis-ci.org/gp42/aws_cloudwatch.svg?branch=master)](https://travis-ci.org/gp42/aws_cloudwatch) [![Cookbook Version](https://img.shields.io/cookbook/v/mysql.svg)](https://supermarket.chef.io/cookbooks/aws_cloudwatch)
+[![Build Status](https://travis-ci.org/gp42/aws_cloudwatch.svg?branch=master)](https://travis-ci.org/gp42/aws_cloudwatch) [![Cookbook Version](https://img.shields.io/cookbook/v/aws_cloudwatch.svg)](https://supermarket.chef.io/cookbooks/aws_cloudwatch)
 
 This cookbook installs and configures [AWS CloudWatch Agent](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html).
 
@@ -15,11 +15,13 @@ This cookbook installs and configures [AWS CloudWatch Agent](https://docs.aws.am
 ## Usage
 
 Place a dependency on the aws_cloudwatch cookbook in your cookbook's metadata.rb
+
 ```
 depends 'aws_cloudwatch', '~> 0.1.0'
 ```
 
 Then in a recipe:
+
 ```
 aws_cloudwatch_agent 'default' do
   action      [:install, :configure, :restart]
@@ -27,18 +29,19 @@ aws_cloudwatch_agent 'default' do
 end
 ```
 
-*json_config*
+### json_config
 
 Amazon CloudWatch Agent configuration file which defines which metrics/logs are collected.
 Place the `amazon-cloudwatch-agent.json.erb` file to `templates` directory. This is an agent configuration for metrics and logs collection.
 See AWS documentation for more information: [Manually Create or Edit the CloudWatch Agent Configuration File](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-Configuration-File-Details.html#CloudWatch-Agent-Configuration-File-Complete-Example)
 
 
-*config*
+### config
 
 The configuration file is at /opt/aws/amazon-cloudwatch-agent/etc.
 See [AWS Documentation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-on-first-instance.html#CloudWatch-Agent-profile-instance-first) for more info.
 Default file looks like this:
+
 ```
 # This common-config is used to configure items used for both ssm and cloudwatch access
 
@@ -63,6 +66,7 @@ Default file looks like this:
 ```
 
 You can modify this configuration by overriding attributes:
+
 ```
 default['aws_cloudwatch']['config']['params']['shared_credential_profile']
 default['aws_cloudwatch']['config']['params']['shared_credential_file']
@@ -72,6 +76,7 @@ default['aws_cloudwatch']['config']['params']['no_proxy']
 ```
 
 It is also possible to configure it with environment variables instead:
+
 ```
 SHARED_CREDENTIAL_PROFILE
 SHARED_CREDENTIAL_FILE
@@ -82,6 +87,7 @@ NO_PROXY
 
 If you want to provide your own template for the configuration file, then you need to supply it as a `config`
 parameter to the resource:
+
 ```
 aws_cloudwatch_agent 'default' do
   action :install
@@ -101,6 +107,7 @@ The `aws_cloudwatch_agent` resource installs AWS Cloudwatch Agent.
 * `json_config` - A template name for an `amazon-cloudwatch-agent.json` file
 
 #### Example
+
 ```
 aws_cloudwatch_agent 'default' do
   action          [:install, :configure, :restart]
