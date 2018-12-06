@@ -15,6 +15,13 @@ module AWSCloudwatch
 
 
     action :install do
+      # Install dependencies
+      node['aws_cloudwatch']['dependencies'][node['platform']].each do |p|
+        package p do
+          action  :install
+        end
+      end
+      
       # Download installer
       package_files = {}
       ['package', 'sig'].each do |file|

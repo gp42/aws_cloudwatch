@@ -7,7 +7,7 @@ This cookbook installs and configures [AWS CloudWatch Agent](https://docs.aws.am
 
 * Ubuntu 14.04, 16.04
 * Centos 6, 7
-* Fedora (latest)
+* Fedora 29
 * Amazon Linux
 
 ## Cookbook Dependencies

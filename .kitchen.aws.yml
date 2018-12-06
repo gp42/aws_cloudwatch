@@ -32,12 +32,13 @@ platforms:
 #  - name: ubuntu-16.04
 #    transport:
 #      username: ubuntu
-  - name: centos-7
+#  - name: centos-7
+  - name: fedora-29
 
 suites:
   - name: default
     run_list:
-      - recipe[test::install_agent]
+      - recipe[test::install_configure_agent]
     driver:
       tags:
         Name: test-kitchen-default
