@@ -32,8 +32,8 @@ platforms:
 #  - name: ubuntu-16.04
 #    transport:
 #      username: ubuntu
-#  - name: centos-7
-  - name: fedora-29
+  - name: centos-7
+#  - name: fedora-29
 
 suites:
   - name: default

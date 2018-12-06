@@ -20,8 +20,8 @@ module AWSCloudwatch
         package p do
           action  :install
         end
-      end
-      
+      end if node['aws_cloudwatch']['dependencies'][node['platform']]
+
       # Download installer
       package_files = {}
       ['package', 'sig'].each do |file|
