@@ -48,7 +48,6 @@ module AWSCloudwatch
       end
 
       # Install
-      Chef::Log.warn("Installing amazon-cloudwatch-agent package on platform: #{node[:platform]}...")
       case node[:platform]
         when 'ubuntu', 'debian'
           dpkg_package 'amazon-cloudwatch-agent' do
