@@ -105,9 +105,31 @@ module AWSCloudwatch
       end
 
       if new_resource.json_config
-        template ::File::join(config_path, node['aws_cloudwatch']['config']['json_file_name']) do
+        json_path = "#{::File::join(config_path, node['aws_cloudwatch']['config']['json_file_name'])}"
+        agent_tom_path = "#{::File::join(config_path, 'amazon-cloudwatch-agent.toml')}"
+        common_path = "#{::File::join(config_path, node['aws_cloudwatch']['config']['file_name'])}"
+        template json_path do
           action    :create
           source    new_resource.json_config
+        end
+        script 'amazon-cloudwatch-agent-config-translator' do
+          action :run
+          not_if { ::File.exists?(agent_tom_path) }
+          case node[:platform]
+            when 'windows'
+              # interpreter "powershell"
+              # # TODO: Powershell draft
+              # code <<-EOH
+              #   ./amazon-cloudwatch-agent-ctl.ps1 -a start -m auto
+              # EOH
+            else
+              interpreter "bash"
+              code <<-EOH
+                res="$(sudo /opt/aws/amazon-cloudwatch-agent/bin/config-translator --input #{json_path} --output #{agent_tom_path} --mode auto --config #{common_path})"
+                echo "$res" | grep 'Valid Json input schema.'
+                exit $?
+              EOH
+          end
         end
       end
     end
