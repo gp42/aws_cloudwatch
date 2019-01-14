@@ -17,7 +17,7 @@ This cookbook installs and configures [AWS CloudWatch Agent](https://docs.aws.am
 Place a dependency on the aws_cloudwatch cookbook in your cookbook's metadata.rb
 
 ```
-depends 'aws_cloudwatch', '~> 0.1.0'
+depends 'aws_cloudwatch', '~> 0.1.1'
 ```
 
 Then in a recipe:
