@@ -29,20 +29,13 @@ module AWSCloudwatch
             }
 
       code_linux =<<-'EOC'
-        gpg --import "$GPG_FILE" 2>&1
-
-        key="$(gpg --with-colons --import-options import-show --dry-run --import "$GPG_FILE" | grep '^fpr' | cut -d':' -f10)"
+        fingerprint="$(gpg --with-colons --import-options import-show --import "$GPG_FILE" | grep '^fpr' | cut -d':' -f10)"
         test $? -ne 0 &&\
           echo 'ERROR: could not retrieve key from gpg file' &&\
             exit 1
 
-        fingerprint="$(gpg --fingerprint $key | grep 'Key fingerprint' | sed 's/\s*Key fingerprint = //g' | tr -d ' ')"
-        test $? -ne 0 &&\
-          echo "ERROR: could not retrieve fingerprint from key '$key'" &&\
-            exit 1
-
         test "$fingerprint" != "$EXPECTED_FINGERPRINT" &&\
-          echo "ERROR: fingerprint '$fingerprint' for key '$key' does not match the expected: '$EXPECTED_FINGERPRINT'" &&\
+          echo "ERROR: fingerprint '$fingerprint' does not match the expected: '$EXPECTED_FINGERPRINT'" &&\
             exit 1
 
         res="$(gpg --verify "$SIG_FILE" "$PACKAGE_FILE" 2>&1)"
