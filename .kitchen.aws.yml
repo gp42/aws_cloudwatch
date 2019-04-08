@@ -1,11 +1,11 @@
 ---
 driver:
   name: ec2
-  aws_ssh_key_id: dev_1805
-  security_group_ids: ["sg-0ab3ed04c02dcfc30"]
+  aws_ssh_key_id: aws3
+  security_group_ids: ["sg-72f52634"]
   region: us-east-1
-  subnet_id: subnet-0e5a851b047f29a34
-  iam_profile_name: EC2Profile-development
+  subnet_id: subnet-4f060805
+  iam_profile_name: ec2-cloudwatch-logs
   instance_type: t2.micro
   associate_public_ip: true
   interface: dns
@@ -13,7 +13,7 @@ driver:
     created-by: test-kitchen
 
 transport:
-  ssh_key: ~/.aws/dev_1805
+  ssh_key: ~/.aws/aws3
   connection_timeout: 10
   connection_retries: 3
   username: root
@@ -32,7 +32,10 @@ platforms:
 #  - name: ubuntu-16.04
 #    transport:
 #      username: ubuntu
-  - name: centos-7
+  - name: ubuntu-18.04
+    transport:
+      username: ubuntu
+#  - name: centos-7
 #  - name: fedora-29
 
 suites:

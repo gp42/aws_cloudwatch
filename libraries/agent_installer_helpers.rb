@@ -31,7 +31,7 @@ module AWSCloudwatch
       code_linux =<<-'EOC'
         gpg --import "$GPG_FILE" 2>&1
 
-        key="$(gpg "$GPG_FILE" | sed 's/pub\s*.*\///g' | sed 's/\s.*//g')"
+        key="$(gpg --with-colons --import-options import-show --dry-run --import "$GPG_FILE" | grep '^fpr' | cut -d':' -f10)"
         test $? -ne 0 &&\
           echo 'ERROR: could not retrieve key from gpg file' &&\
             exit 1
