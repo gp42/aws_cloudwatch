@@ -29,10 +29,9 @@ module AWSCloudwatch
             }
 
       code_linux =<<-'EOC'
-        fingerprint="$(gpg --with-colons --import-options import-show --import "$GPG_FILE" | grep '^fpr' | cut -d':' -f10)"
-        test $? -ne 0 &&\
-          echo 'ERROR: could not retrieve key from gpg file' &&\
-            exit 1
+        gpg --import "$GPG_FILE" 2>&1
+        key="Amazon CloudWatch Agent"
+        fingerprint="$(gpg --with-colons --fixed-list-mode --with-fingerprint --list-keys $key | grep fpr | cut -d':' -f10)"
 
         test "$fingerprint" != "$EXPECTED_FINGERPRINT" &&\
           echo "ERROR: fingerprint '$fingerprint' does not match the expected: '$EXPECTED_FINGERPRINT'" &&\
