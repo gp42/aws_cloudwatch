@@ -7,6 +7,7 @@ module AWSCloudwatch
 
     property :config, String
     property :json_config, String
+    property :json_variables, Hash
     property :config_params, Hash, default: {'param' => 'value'}
 
     default_action :install
@@ -111,6 +112,9 @@ module AWSCloudwatch
         template json_path do
           action    :create
           source    new_resource.json_config
+          if new_resource.json_variables
+            variables new_resource.json_variables
+          end
         end
         script 'amazon-cloudwatch-agent-config-translator' do
           action :run
