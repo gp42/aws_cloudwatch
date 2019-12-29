@@ -2,7 +2,7 @@ name 'aws_cloudwatch'
 maintainer 'Gennady Potapov'
 license 'Apache-2.0'
 description 'Provides aws_cloudwatch_agent resource'
-version '1.0.2'
+version '1.0.3'
 chef_version '>= 12.14' if respond_to?(:chef_version)
 
 supports 'ubuntu', '= 14.04'
