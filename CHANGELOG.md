@@ -2,7 +2,10 @@
 
 This file is used to list changes made in each version of the aws_cloudwatch cookbook.
 
-## 1.0.2 (2019-04.07)
+## 1.0.3 (2019-10-07)
+- Allow variables to be passed to amazon-cloudwatch-agent.json template
+
+## 1.0.2 (2019-04-07)
 - Ubuntu-18.04 support
 
 ## 1.0.1 (2019-01-14)
