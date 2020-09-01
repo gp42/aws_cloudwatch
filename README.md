@@ -35,6 +35,39 @@ Amazon CloudWatch Agent configuration file which defines which metrics/logs are 
 Place the `amazon-cloudwatch-agent.json.erb` file to `templates` directory. This is an agent configuration for metrics and logs collection.
 See AWS documentation for more information: [Manually Create or Edit the CloudWatch Agent Configuration File](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-Configuration-File-Details.html#CloudWatch-Agent-Configuration-File-Complete-Example)
 
+### json_variables
+
+A hash of variables can be passed into the template file. This is similar to the way variables are used in the [template resource](https://docs.chef.io/resources/template/). 
+As an example, define your resource with variables:
+
+```
+aws_cloudwatch_agent 'default' do
+  action      [:install, :configure, :restart]
+  json_config 'amazon-cloudwatch-agent.json.erb'
+  json_variables  ({
+    :disks => '/'
+  })
+end
+```
+
+Then define your `amazon-cloudwatch-agent.json.erb` template:
+
+```
+{
+  "metrics": {
+    "metrics_collected": {
+      "disk": {
+        "measurement": [
+          "used_percent"
+        ],
+        "resources": [
+          <%= @disks %>
+        ]
+      }
+    }
+  }
+}
+```
 
 ### config
 
@@ -105,6 +138,7 @@ The `aws_cloudwatch_agent` resource installs AWS Cloudwatch Agent.
 * `config` - A template name for a custom `test-config.toml` file
 * `config_params` - A hash with `test-config.toml` parameters
 * `json_config` - A template name for an `amazon-cloudwatch-agent.json` file
+* `json_variables` - A hash with variables available to the `amazon-cloudwatch-agent.json` template
 
 #### Example
 
@@ -112,6 +146,9 @@ The `aws_cloudwatch_agent` resource installs AWS Cloudwatch Agent.
 aws_cloudwatch_agent 'default' do
   action          [:install, :configure, :restart]
   json_config     'amazon-cloudwatch-agent.json.erb'
+  json_variables  ({
+    :disks => '/'
+  })
   config_params   :shared_credential_profile => 'test_profile',
                   :shared_credential_file => '/etc/test_credential_file',
                   :http_proxy => 'http://192.168.0.1',
