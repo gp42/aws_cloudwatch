@@ -125,7 +125,7 @@ module AWSCloudwatch
             else
               interpreter "bash"
               code <<-EOH
-                res="$(sudo /opt/aws/amazon-cloudwatch-agent/bin/config-translator --input #{json_path} --output #{agent_tom_path} --mode auto --config #{common_path})"
+                res="$(/opt/aws/amazon-cloudwatch-agent/bin/config-translator --input #{json_path} --output #{agent_tom_path} --mode auto --config #{common_path})"
                 echo "$res" | grep 'Valid Json input schema.'
                 exit $?
               EOH
@@ -147,8 +147,8 @@ module AWSCloudwatch
           else
             interpreter "bash"
             code <<-EOH
-              sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start -m auto
-              res="$(sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a status)"
+              /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start -m auto
+              res="$(/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a status)"
               echo "$res" | grep '"status": "running"'
               exit $?
             EOH
@@ -169,8 +169,8 @@ module AWSCloudwatch
           else
             interpreter "bash"
             code <<-EOH
-              sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a stop -m auto
-              res="$(sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a status)"
+              /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a stop -m auto
+              res="$(/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a status)"
               echo "$res" | grep '"status": "stopped"'
               exit $?
             EOH
