@@ -56,5 +56,6 @@ default['aws_cloudwatch']['config']['params'] = {
 }
 default['aws_cloudwatch']['dependencies'] = {
     'redhat': ['gnupg'],
-    'fedora': ['gnupg']
+    'fedora': ['gnupg'],
+    'ubuntu': ['collectd']
 }
