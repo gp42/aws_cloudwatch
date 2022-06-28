@@ -43,8 +43,8 @@ See [AWS Documentation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/moni
 Default file looks like this:
 
 ```
-# This common-config is used to configure items used for both ssm and cloudwatch access
 
+# This common-config is used to configure items used for both ssm and cloudwatch access
 
 ## Configuration for shared credential.
 ## Default credential strategy will be used if it is absent here:
@@ -118,4 +118,27 @@ aws_cloudwatch_agent 'default' do
                   :https_proxy => 'https://192.168.0.1',
                   :no_proxy => 'http://192.168.0.10'
 end
+```
+
+## Development
+
+### Dependencies
+- Ruby (see .tool-versions)
+- [Ruby Bundler](bundler.io)
+
+Install gems with bundler:
+```
+bundle i
+```
+
+### Testing
+Create a branch for this cookbook. Create a PR. This will trigger a build on Travis CI. Make sure it succeeds.
+You can also use test kitchen with AWS. Make sure you modify it with your custom parameters like Security Group id and
+others.
+
+```
+# Docker
+KITCHEN_YAML=.kitchen.dokken.yml kitchen verify default
+# AWS (uses OS credentials)
+KITCHEN_YAML=.kitchen.aws.yml kitchen verify default
 ```

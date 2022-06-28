@@ -1,62 +1,66 @@
+---
 driver:
   name: dokken
-  privileged: true
-  chef_version: <%= ENV['CHEF_VERSION'] || 'current' %>
+  chef_version: latest
 
 transport:
   name: dokken
 
 provisioner:
   name: dokken
-  deprecations_as_errors: true
+
+verifier:
+  name: inspec
 
 platforms:
-- name: amazonlinux
-  driver:
-    image: dokken/amazonlinux
-    pid_one_command: /sbin/init
+  - name: centos-7
+    driver:
+      image: dokken/centos-7
+#  - name: debian-8
+#  - name: ubuntu-16.04
+#  - name: ubuntu-18.04
 
-- name: amazonlinux-2
-  driver:
-    image: dokken/amazonlinux-2
-    pid_one_command: /usr/lib/systemd/systemd
-
-- name: debian-8
-  driver:
-    image: dokken/debian-8
-    pid_one_command: /bin/systemd
-
-- name: debian-9
-  driver:
-    image: dokken/debian-9
-    pid_one_command: /bin/systemd
-
-- name: centos-6
-  driver:
-    image: dokken/centos-6
-    pid_one_command: /sbin/init
-
-- name: centos-7
-  driver:
-    image: dokken/centos-7
-    pid_one_command: /usr/lib/systemd/systemd
-
-- name: fedora-29
-  driver:
-    image: dokken/fedora-29
-    pid_one_command: /usr/lib/systemd/systemd
-
-- name: ubuntu-14.04
-  driver:
-    image: dokken/ubuntu-14.04
-    pid_one_command: /sbin/init
-
-- name: ubuntu-16.04
-  driver:
-    image: dokken/ubuntu-16.04
-    pid_one_command: /bin/systemd
-
-- name: ubuntu-18.04
-  driver:
-    image: dokken/ubuntu-18.04
-    pid_one_command: /bin/systemd
+suites:
+  - name: default
+    run_list:
+      - recipe[test::install_configure_agent]
+    verifier:
+      inspec_tests:
+        - test/integration/default
+    attributes:
+      aws_cloudwatch:
+        config:
+          params:
+            shared_credential_profile: test_profile
+            shared_credential_file: /etc/test_credential_file
+            http_proxy: http://192.168.0.1
+            https_proxy: https://192.168.0.1
+            no_proxy: http://192.168.0.10
+  - name: prop
+    run_list:
+      - recipe[test::install_agent_with_prop]
+    verifier:
+      inspec_tests:
+        - test/integration/default
+    attributes:
+  - name: config
+    run_list:
+      - recipe[test::install_agent_with_config]
+    verifier:
+      inspec_tests:
+        - test/integration/default
+    attributes:
+  - name: remove
+    run_list:
+      - recipe[test::install_remove_agent]
+    verifier:
+      inspec_tests:
+        - test/integration/remove_agent
+    attributes:
+  - name: unit-incorrect-gpg-fingerprint
+    run_list:
+    - recipe[test::unit_incorrect_gpg_fingerprint]
+    verifier:
+      inspec_tests:
+        - test/unit/default/incorrect_gpg_test.rb
+    attributes:

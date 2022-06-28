@@ -125,7 +125,7 @@ module AWSCloudwatch
             else
               interpreter "bash"
               code <<-EOH
-                res="$(sudo /opt/aws/amazon-cloudwatch-agent/bin/config-translator --input #{json_path} --output #{agent_tom_path} --mode auto --config #{common_path})"
+                res="$(sudo /opt/aws/amazon-cloudwatch-agent/bin/config-translator --input #{json_path} --output #{agent_tom_path} --mode auto --config #{common_path} 2>&1)"
                 echo "$res" | grep 'Valid Json input schema.'
                 exit $?
               EOH
