@@ -16,9 +16,12 @@ platforms:
   - name: centos-7
     driver:
       image: dokken/centos-7
-#  - name: debian-8
-#  - name: ubuntu-16.04
-#  - name: ubuntu-18.04
+  - name: ubuntu-16.04
+  - name: ubuntu-18.04
+  - name: ubuntu-20.04
+  - name: debian-9
+  - name: debian-10
+  - name: debian-11
 
 suites:
   - name: default
