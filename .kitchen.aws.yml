@@ -1,10 +1,9 @@
 ---
 driver:
   name: ec2
-  aws_ssh_key_id: aws3
-  security_group_ids: ["sg-72f52634"]
+  security_group_ids: ["sg-2fb5ea78"]
   region: us-east-1
-  subnet_id: subnet-4f060805
+  subnet_id:  subnet-779f9410
   iam_profile_name: ec2-cloudwatch-logs
   instance_type: t2.micro
   associate_public_ip: true
@@ -13,10 +12,10 @@ driver:
     created-by: test-kitchen
 
 transport:
-  ssh_key: ~/.aws/aws3
   connection_timeout: 10
   connection_retries: 3
   username: root
+#  verbose: debug
 
 provisioner:
   name: chef_zero
@@ -29,14 +28,20 @@ verifier:
   name: inspec
 
 platforms:
-  - name: ubuntu-16.04
+  - name: centos-7
+    driver:
+      image_id: ami-00e87074e52e6c9f9
+    transport:
+      username: centos
+  - name: ubuntu-20.04
     transport:
       username: ubuntu
   - name: ubuntu-18.04
     transport:
       username: ubuntu
-  - name: centos-7
   - name: fedora-29
+    transport:
+      username: fedora
 
 suites:
   - name: default
@@ -49,3 +54,11 @@ suites:
       inspec_tests:
         - test/integration/default
     attributes:
+      aws_cloudwatch:
+        config:
+          params:
+            shared_credential_profile: test_profile
+            shared_credential_file: /etc/test_credential_file
+            http_proxy: http://192.168.0.1
+            https_proxy: https://192.168.0.1
+            no_proxy: http://192.168.0.10
