@@ -8,8 +8,8 @@ chef_version '>= 13.0' if respond_to?(:chef_version)
 supports 'ubuntu', '= 16.04'
 supports 'ubuntu', '= 18.04'
 supports 'ubuntu', '= 20.04'
-supports 'debian', '>= 9'
-supports 'centos', '= 7'
+supports 'debian', '>= 9.0'
+supports 'centos', '= 7.0'
 supports 'fedora'
 supports 'amazon'
 
