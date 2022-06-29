@@ -17,11 +17,23 @@ platforms:
     driver:
       image: dokken/centos-7
   - name: ubuntu-16.04
+    driver:
+      image: dokken/ubuntu-16.04
   - name: ubuntu-18.04
+    driver:
+      image: dokken/ubuntu-18.04
   - name: ubuntu-20.04
+    driver:
+      image: dokken/ubuntu-20.04
   - name: debian-9
+    driver:
+      image: dokken/debian-9
   - name: debian-10
+    driver:
+      image: dokken/debian-10
   - name: debian-11
+    driver:
+      image: dokken/debian-11
 
 suites:
   - name: default
@@ -52,18 +64,16 @@ suites:
     verifier:
       inspec_tests:
         - test/integration/default
-    attributes:
-  - name: remove
-    run_list:
-      - recipe[test::install_remove_agent]
-    verifier:
-      inspec_tests:
-        - test/integration/remove_agent
-    attributes:
+  # Does not work because init system is not set up and disabling service fails
+  # - name: remove
+  #   run_list:
+  #     - recipe[test::install_remove_agent]
+  #   verifier:
+  #     inspec_tests:
+  #       - test/integration/remove_agent
   - name: unit-incorrect-gpg-fingerprint
     run_list:
-    - recipe[test::unit_incorrect_gpg_fingerprint]
+      - recipe[test::unit_incorrect_gpg_fingerprint]
     verifier:
       inspec_tests:
         - test/unit/default/incorrect_gpg_test.rb
-    attributes:
