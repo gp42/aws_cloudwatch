@@ -1,7 +1,7 @@
 ---
 driver:
   name: dokken
-  chef_version: latest
+  chef_version: <%= ENV['CHEF_VERSION'] || 'current' %>
 
 transport:
   name: dokken
