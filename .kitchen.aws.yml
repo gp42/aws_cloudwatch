@@ -1,7 +1,6 @@
 ---
 driver:
   name: ec2
-#  aws_ssh_key_id: aws-cloudwatch-kitchen
   security_group_ids: ["sg-2fb5ea78"]
   region: us-east-1
   subnet_id:  subnet-779f9410
@@ -13,7 +12,6 @@ driver:
     created-by: test-kitchen
 
 transport:
-#  ssh_key: ~/.ssh/ops42-aws-cloudwatch-kitchen.pem
   connection_timeout: 10
   connection_retries: 3
   username: root
