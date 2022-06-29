@@ -3,6 +3,8 @@
 
 This cookbook installs and configures [AWS CloudWatch Agent](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html).
 
+Check out my blog at [ops42.org](https://ops42.org?utm_medium=readme&utm_source=aws_cloudwatch_readme).
+
 ## Platform Support
 
 * Ubuntu 16.04, 18.04, 20.04
